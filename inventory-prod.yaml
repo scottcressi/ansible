@@ -1,0 +1,10 @@
+all:
+  children:
+    prod:
+      children:
+        git:
+          hosts:
+            git.prod.com:
+        mysql:
+          hosts:
+            mysql.prod.com:

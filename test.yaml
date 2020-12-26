@@ -1,0 +1,5 @@
+ - name: git
+   become: true
+   hosts: git
+   roles:
+    - {role: geerlingguy.git}

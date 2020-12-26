@@ -1,0 +1,10 @@
+all:
+  children:
+    dev:
+      children:
+        git:
+          hosts:
+            git.dev.com:
+        mysql:
+          hosts:
+            mysql.dev.com:
