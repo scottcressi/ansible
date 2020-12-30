@@ -1,0 +1,6 @@
+---
+- name: git
+  become: true
+  hosts: all
+  tasks:
+   - import_tasks: common.yaml
