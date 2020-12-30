@@ -1,4 +1,7 @@
 if ! command -v ansible > /dev/null ; then echo ansible is not installed ;  exit 0 ; fi
+if ! command -v yamllint > /dev/null ; then echo yamllint is not installed ;  exit 0 ; fi
+
+yamllint . -s
 
 export ANSIBLE_HOST_KEY_CHECKING=False
 
