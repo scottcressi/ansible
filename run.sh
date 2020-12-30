@@ -5,12 +5,27 @@ yamllint . -s
 
 export ANSIBLE_HOST_KEY_CHECKING=False
 
-echo "enter env: test | dev | prod"
-read -r ENV
-echo "enter playbook: base | test"
-read -r PLAYBOOK
-echo "enter group: git | mysql "
-read -r LIMIT
-
 ansible-galaxy install -r requirements.yaml -f
+
+echo
+echo available environments:
+find inventories -type f | sed 's/inventories\/inventory-//g' | sed 's/.yaml//g'
+echo
+
+echo enter env:
+read -r ENV
+echo
+
+echo available playbooks:
+find roles -type f | sed 's/roles\///g' | sed 's/.yaml//g'
+echo
+
+echo "enter playbook:"
+read -r PLAYBOOK
+echo
+
+echo "enter group: git | mysql | or hit enter for all hosts"
+read -r LIMIT
+echo
+
 ansible-playbook roles/"$PLAYBOOK".yaml -e ansible_python_interpreter=/usr/bin/python2 -i inventories/inventory-"$ENV".yaml --limit "$LIMIT" --check --diff
