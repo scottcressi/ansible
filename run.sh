@@ -28,4 +28,10 @@ echo "enter group: git | mysql | or hit enter for all hosts"
 read -r LIMIT
 echo
 
-ansible-playbook roles/"$PLAYBOOK".yaml -e ansible_python_interpreter=/usr/bin/python2 -i inventories/inventory-"$ENV".yaml --limit "$LIMIT" --check --diff
+echo run noop: y/s?
+read -r NOOP
+if [ "$NOOP" = y ] ; then
+    CHECK=--check
+fi
+
+ansible-playbook roles/"$PLAYBOOK".yaml -e ansible_python_interpreter=/usr/bin/python2 -i inventories/inventory-"$ENV".yaml --limit "$LIMIT" --diff $CHECK
