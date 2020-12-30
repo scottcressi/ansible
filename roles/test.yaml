@@ -4,5 +4,3 @@
   hosts: git
   roles:
    - {role: geerlingguy.git}
-  tasks:
-   - import_tasks: common.yaml
