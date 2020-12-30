@@ -1,8 +1,8 @@
 ---
 - name: git
-   become: true
-   hosts: git
-   roles:
-    - {role: geerlingguy.git}
-   tasks:
+  become: true
+  hosts: git
+  roles:
+   - {role: geerlingguy.git}
+  tasks:
    - import_tasks: common.yaml
