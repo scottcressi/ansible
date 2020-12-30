@@ -1,4 +1,5 @@
- - name: git
+---
+- name: git
    become: true
    hosts: git
    roles:
