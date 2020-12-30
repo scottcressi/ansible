@@ -8,4 +8,4 @@ echo "enter group: git | mysql "
 read -r LIMIT
 
 ansible-galaxy install -r requirements.yaml -f
-ansible-playbook test.yaml -e ansible_python_interpreter=/usr/bin/python2 -i inventory-"$ENV".yaml --limit "$LIMIT" --check --diff
+ansible-playbook roles/test.yaml -e ansible_python_interpreter=/usr/bin/python2 -i inventories/inventory-"$ENV".yaml --limit "$LIMIT" --check --diff
