@@ -7,31 +7,22 @@ export ANSIBLE_HOST_KEY_CHECKING=False
 
 ansible-galaxy install -r requirements.yaml -f
 
-echo
-echo available environments:
-find inventories -type f | sed 's/inventories\/inventory-//g' | sed 's/.yaml//g'
-echo
-
-echo enter env:
-read -r ENV
-echo
-
-echo available playbooks:
-find roles -type f | sed 's/roles\///g' | sed 's/.yaml//g'
-echo
-
-echo "enter playbook:"
-read -r PLAYBOOK
-echo
-
-echo "enter group: git | mysql | or hit enter for all hosts"
-read -r LIMIT
-echo
-
-echo run noop: y/s?
-read -r NOOP
-if [ "$NOOP" = y ] ; then
-    CHECK=--check
-fi
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --playbook)
+        PLAYBOOK=$2
+      ;;
+    --env)
+        ENV=$2
+      ;;
+    --limit)
+        LIMIT=$2
+      ;;
+    --noop)
+        CHECK=--check
+      ;;
+  esac
+  shift
+done
 
 ansible-playbook roles/"$PLAYBOOK".yaml -e ansible_python_interpreter=/usr/bin/python2 -i inventories/inventory-"$ENV".yaml --limit "$LIMIT" --diff $CHECK
