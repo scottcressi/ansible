@@ -1,6 +1,17 @@
 if ! command -v ansible > /dev/null ; then echo ansible is not installed ;  exit 0 ; fi
 if ! command -v yamllint > /dev/null ; then echo yamllint is not installed ;  exit 0 ; fi
 
+if [[ $# -eq 0 ]] ; then
+    echo """
+options:
+--playbook PLAYBOOK
+--env ENV
+--limit LIMIT
+--apply
+"""
+    exit 0
+fi
+
 echo running yamllint
 yamllint . -s
 
@@ -11,18 +22,10 @@ NOOP=--check
 
 while [ $# -gt 0 ]; do
   case "$1" in
-    --playbook)
-        PLAYBOOK=$2
-      ;;
-    --env)
-        ENV=$2
-      ;;
-    --limit)
-        LIMIT=$2
-      ;;
-    --apply)
-        NOOP=
-      ;;
+    --playbook) PLAYBOOK=$2 ;;
+    --env) ENV=$2 ;;
+    --limit) LIMIT=$2 ;;
+    --apply) NOOP= ;;
   esac
   shift
 done
