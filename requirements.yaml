@@ -5,5 +5,5 @@ roles:
   - name: geerlingguy.filebeat
   - name: geerlingguy.repo-epel
   - name: dev-sec.ssh-hardening
-  - name: robertdebock.selinux
+  - name: dev-sec.os-hardening
   - name: dj-wasabi.telegraf

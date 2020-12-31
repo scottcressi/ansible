@@ -15,7 +15,7 @@
     name: dj-wasabi.telegraf
 - name: selinux
   import_role:
-    name: robertdebock.selinux
+    name: dev-sec.os-hardening
 - name: epel
   import_role:
     name: geerlingguy.repo-epel
