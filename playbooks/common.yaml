@@ -4,3 +4,6 @@
     path: /tmp/some_directory
     state: directory
     mode: '0755'
+- name: Import the example role
+  import_role:
+    name: geerlingguy.docker

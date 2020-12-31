@@ -2,10 +2,5 @@
 all:
   children:
     test:
-      children:
-        git:
-          hosts:
-            localhost:
-        mysql:
-          hosts:
-            localhost:
+      hosts:
+        localhost:
