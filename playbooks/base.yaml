@@ -1,6 +1,0 @@
----
-- name: common
-  become: true
-  hosts: all
-  tasks:
-   - import_tasks: common.yaml

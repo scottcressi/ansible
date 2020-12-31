@@ -1,24 +1,28 @@
 ---
-- name: testdir
-  file:
-    path: /tmp/some_directory
-    state: directory
-    mode: '0755'
-- name: docker
-  import_role:
-    name: geerlingguy.docker
-- name: ssh
-  import_role:
-    name: dev-sec.ssh-hardening
-- name: telegraf
-  import_role:
-    name: dj-wasabi.telegraf
-- name: selinux
-  import_role:
-    name: dev-sec.os-hardening
-- name: epel
-  import_role:
-    name: geerlingguy.repo-epel
-- name: filebeat
-  import_role:
-    name: geerlingguy.filebeat
+- hosts: all
+  tasks:
+
+  # galaxy roles
+  - name: docker
+    import_role:
+      name: geerlingguy.docker
+  - name: ssh
+    import_role:
+      name: dev-sec.ssh-hardening
+  - name: telegraf
+    import_role:
+      name: dj-wasabi.telegraf
+  - name: selinux
+    import_role:
+      name: dev-sec.os-hardening
+  - name: epel
+    import_role:
+      name: geerlingguy.repo-epel
+  - name: filebeat
+    import_role:
+      name: geerlingguy.filebeat
+
+  # internal roles
+  - name: test
+    import_role:
+      name: test
