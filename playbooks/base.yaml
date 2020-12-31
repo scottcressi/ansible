@@ -1,5 +1,5 @@
 ---
-- name: git
+- name: common
   become: true
   hosts: all
   tasks:

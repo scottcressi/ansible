@@ -1,6 +1,9 @@
 if ! command -v ansible > /dev/null ; then echo ansible is not installed ;  exit 0 ; fi
 if ! command -v yamllint > /dev/null ; then echo yamllint is not installed ;  exit 0 ; fi
 
+echo running yamllint
+yamllint . -s
+
 if [[ $# -eq 0 ]] ; then
     echo """
 options:
@@ -11,9 +14,6 @@ options:
 """
     exit 0
 fi
-
-echo running yamllint
-yamllint . -s
 
 export ANSIBLE_HOST_KEY_CHECKING=False
 

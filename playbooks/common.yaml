@@ -1,9 +1,24 @@
 ---
-- name: Create a directory if it does not exist
+- name: testdir
   file:
     path: /tmp/some_directory
     state: directory
     mode: '0755'
-- name: Import the example role
+- name: docker
   import_role:
     name: geerlingguy.docker
+- name: ssh
+  import_role:
+    name: dev-sec.ssh-hardening
+- name: telegraf
+  import_role:
+    name: dj-wasabi.telegraf
+- name: selinux
+  import_role:
+    name: robertdebock.selinux
+- name: epel
+  import_role:
+    name: geerlingguy.repo-epel
+- name: filebeat
+  import_role:
+    name: geerlingguy.filebeat
