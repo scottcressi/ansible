@@ -1,9 +1,9 @@
 ---
 roles:
-  - name: geerlingguy.git
+  - name: dev-sec.os-hardening
+  - name: dev-sec.ssh-hardening
+  - name: dj-wasabi.telegraf
   - name: geerlingguy.docker
   - name: geerlingguy.filebeat
+  - name: geerlingguy.git
   - name: geerlingguy.repo-epel
-  - name: dev-sec.ssh-hardening
-  - name: dev-sec.os-hardening
-  - name: dj-wasabi.telegraf
