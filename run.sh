@@ -1,3 +1,4 @@
+if ! command -v python3 > /dev/null ; then echo python3 is not installed ;  exit 0 ; fi
 if ! command -v ansible > /dev/null ; then echo ansible is not installed ;  exit 0 ; fi
 if ! command -v yamllint > /dev/null ; then echo yamllint is not installed ;  exit 0 ; fi
 
