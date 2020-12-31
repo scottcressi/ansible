@@ -31,4 +31,4 @@ while [ $# -gt 0 ]; do
   shift
 done
 
-ansible-playbook playbooks/"$PLAYBOOK".yaml -e ansible_python_interpreter=/usr/bin/python3 -i inventories/inventory-"$ENV".yaml --limit "$LIMIT" --diff $NOOP
+ansible-playbook playbooks/"$PLAYBOOK".yaml -e ansible_python_interpreter=/usr/bin/python2 -i inventories/inventory-"$ENV".yaml --limit "$LIMIT" --diff $NOOP --become
