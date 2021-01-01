@@ -18,8 +18,8 @@ fi
 
 export ANSIBLE_HOST_KEY_CHECKING=False
 
-ansible-galaxy install -r requirements.yaml -f
-NOOP=--check
+ansible-galaxy install -r requirements.yaml
+NOOP="--check"
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -31,4 +31,19 @@ while [ $# -gt 0 ]; do
   shift
 done
 
-ansible-playbook playbooks/"$PLAYBOOK".yaml -e ansible_python_interpreter=/usr/bin/python2 -i inventories/inventory-"$ENV".yaml --limit "$LIMIT" --diff $NOOP --become
+if [ "$ENV" = test ] ; then
+    CONNECTION=--connection=local
+fi
+if [ "$ENV" = test ] ; then
+    LIMIT="test"
+fi
+
+ansible-playbook \
+    playbooks/"$PLAYBOOK".yaml \
+    -e ansible_python_interpreter=/usr/bin/python2 \
+    -i inventories/inventory-"$ENV".yaml \
+    --limit $LIMIT \
+    --diff \
+    $NOOP \
+    --become \
+    "$CONNECTION"
