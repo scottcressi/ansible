@@ -3,9 +3,6 @@
   tasks:
 
   # galaxy roles
-  - name: docker
-    import_role:
-      name: geerlingguy.docker
   - name: ssh
     import_role:
       name: dev-sec.ssh-hardening
