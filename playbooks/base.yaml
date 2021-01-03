@@ -18,8 +18,3 @@
   - name: filebeat
     import_role:
       name: geerlingguy.filebeat
-
-  # internal roles
-  - name: test
-    import_role:
-      name: test

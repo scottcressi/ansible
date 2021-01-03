@@ -1,0 +1,10 @@
+---
+- import_playbook: base.yaml
+
+- hosts: all
+  tasks:
+  - name: testdir
+    file:
+      path: /tmp/some_directory
+      state: directory
+      mode: '0755'
