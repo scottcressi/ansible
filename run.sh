@@ -40,7 +40,7 @@ fi
 
 ansible-playbook \
     playbooks/"$PLAYBOOK".yaml \
-    -e ansible_python_interpreter=/usr/bin/python2 \
+    -e ansible_python_interpreter=/usr/bin/python3 \
     -i inventories/inventory-"$ENV".yaml \
     --limit $LIMIT \
     --diff \
