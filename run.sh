@@ -8,7 +8,7 @@ yamllint . -s
 if [[ $# -eq 0 ]] ; then
     echo """
 options:
---playbook PLAYBOOK ie. base | test | etc.
+--playbook PLAYBOOK ie. playbooks/test.yaml | etc.
 --env ENV ie. dev | test | prod | etc.
 --limit LIMIT ie. git | mysql | etc.
 --apply
