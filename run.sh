@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 if ! command -v python3 > /dev/null ; then echo python3 is not installed ;  exit 0 ; fi
 if ! command -v ansible > /dev/null ; then echo ansible is not installed ;  exit 0 ; fi
 if ! command -v yamllint > /dev/null ; then echo yamllint is not installed ;  exit 0 ; fi
@@ -5,7 +7,7 @@ if ! command -v yamllint > /dev/null ; then echo yamllint is not installed ;  ex
 echo running yamllint
 yamllint . -s
 
-if [[ $# -eq 0 ]] ; then
+if [ $# -eq 0 ] ; then
     echo """
 options:
 --playbook PLAYBOOK ie. playbooks/test.yaml | etc.
