@@ -2,9 +2,22 @@
 - import_playbook: base.yaml
 
 - hosts: all
+
+  vars_prompt:
+
+    - name: token
+      prompt: What is the vault token?
+      private: yes
+
   tasks:
+
   - name: testdir
     file:
       path: /tmp/some_directory
       state: directory
       mode: '0755'
+
+  # https://docs.ansible.com/ansible/latest/collections/community/general/hashi_vault_lookup.html#examples
+  - name: Return all secrets from a path
+    ansible.builtin.debug:
+      msg: "{{ lookup('community.general.hashi_vault', 'secret=secret/data/hello token={{ token }} url=http://localhost:8200') }}"
