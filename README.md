@@ -3,6 +3,11 @@
 bash run.sh --vault
 ```
 
+# install prereqs (optional)
+```
+bash run.sh --install_prereqs
+```
+
 # run ansible
 ```
 bash run.sh
