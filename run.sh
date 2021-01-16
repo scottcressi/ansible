@@ -4,9 +4,11 @@ if ! command -v python3 > /dev/null ; then echo python3 is not installed ;  exit
 if ! command -v ansible > /dev/null ; then echo ansible is not installed ;  exit 0 ; fi
 if ! command -v yamllint > /dev/null ; then echo yamllint is not installed ;  exit 0 ; fi
 
-echo running yamllint
-yamllint . -s
+# hvac module
+hvac="$(find "$(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")" -maxdepth 1 | grep -c hvac$)"
+if [ "$hvac" = 0 ] ; then pip install hvac ; fi
 
+# help
 if [ $# -eq 0 ] ; then
     echo """
 options:
@@ -49,6 +51,7 @@ if [ "$ENV" = test ] ; then
     CONNECTION=--connection=local
 fi
 
+yamllint . -s
 ansible-galaxy install -r requirements.yaml
 echo
 ansible-playbook \
