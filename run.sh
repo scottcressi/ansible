@@ -6,7 +6,7 @@ if ! command -v yamllint > /dev/null ; then echo yamllint is not installed ;  ex
 
 # hvac module
 hvac="$(find "$(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")" -maxdepth 1 | grep -c hvac$)"
-if [ "$hvac" = 0 ] ; then pip install hvac ; fi
+if [ "$hvac" = 0 ] ; then echo hvac module missing, please run: pip install hvac ; fi
 
 # help
 if [ $# -eq 0 ] ; then
@@ -15,7 +15,7 @@ options:
 --playbook PLAYBOOK ie. playbooks/test.yaml | etc.
 --env ENV ie. dev | test | prod | etc.
 --limit LIMIT ie. git | mysql | etc.
---vault
+--install_prereqs
 --apply
 """
     exit 0
@@ -28,11 +28,12 @@ NOOP="--check"
 ENV="test"
 LIMIT="test"
 
-init_vault(){
+install_prereqs(){
     if ! command -v vault > /dev/null ; then echo vault is not installed ;  exit 0 ; fi
     if ! pgrep vault > /dev/null ; then
         vault server -dev -dev-root-token-id="root" &
     fi
+    pip install --upgrade ansible hvac
 
 }
 
@@ -42,7 +43,7 @@ while [ $# -gt 0 ]; do
     --env) ENV=$2 ;;
     --limit) LIMIT=$2 ;;
     --apply) NOOP= ;;
-    --vault) init_vault && exit 0 ;;
+    --install_prereqs) install_prereqs && exit 0 ;;
   esac
   shift
 done
