@@ -50,6 +50,7 @@ if [ "$ENV" = test ] ; then
 fi
 
 ansible-galaxy install -r requirements.yaml
+echo
 ansible-playbook \
     "$PLAYBOOK" \
     -e ansible_python_interpreter=/usr/bin/python3 \
