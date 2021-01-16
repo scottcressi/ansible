@@ -13,6 +13,7 @@ options:
 --playbook PLAYBOOK ie. playbooks/test.yaml | etc.
 --env ENV ie. dev | test | prod | etc.
 --limit LIMIT ie. git | mysql | etc.
+--vault
 --apply
 """
     exit 0
@@ -20,12 +21,18 @@ fi
 
 export ANSIBLE_HOST_KEY_CHECKING=False
 
-ansible-galaxy install -r requirements.yaml
-
 # defaults
 NOOP="--check"
 ENV="test"
 LIMIT="test"
+
+init_vault(){
+    if ! command -v vault > /dev/null ; then echo vault is not installed ;  exit 0 ; fi
+    if ! pgrep vault > /dev/null ; then
+        vault server -dev -dev-root-token-id="root" &
+    fi
+
+}
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -33,6 +40,7 @@ while [ $# -gt 0 ]; do
     --env) ENV=$2 ;;
     --limit) LIMIT=$2 ;;
     --apply) NOOP= ;;
+    --vault) init_vault && exit 0 ;;
   esac
   shift
 done
@@ -41,6 +49,7 @@ if [ "$ENV" = test ] ; then
     CONNECTION=--connection=local
 fi
 
+ansible-galaxy install -r requirements.yaml
 ansible-playbook \
     "$PLAYBOOK" \
     -e ansible_python_interpreter=/usr/bin/python3 \
