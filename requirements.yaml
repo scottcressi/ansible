@@ -1,16 +1,14 @@
 ---
 roles:
-  - name: dev-sec.os-hardening
-    version: 6.2.0
-  - name: dev-sec.ssh-hardening
-    version: 9.7.0
   - name: dj-wasabi.telegraf
     version: 0.13.0
-  - name: geerlingguy.docker
-    version: 3.0.0
-  - name: geerlingguy.filebeat
-    version: 3.0.2
+  - name: elastic.beats
+    version: v7.10.2
   - name: geerlingguy.git
     version: 3.0.0
   - name: geerlingguy.repo-epel
     version: 3.0.0
+
+collections:
+  - name: devsec.hardening
+    version: 7.0.0
