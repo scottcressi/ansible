@@ -2,19 +2,21 @@
 - hosts: all
   tasks:
 
-  # galaxy roles
-  - name: ssh
-    import_role:
-      name: dev-sec.ssh-hardening
-  - name: telegraf
-    import_role:
-      name: dj-wasabi.telegraf
-  - name: selinux
-    import_role:
-      name: dev-sec.os-hardening
-  - name: epel
-    import_role:
-      name: geerlingguy.repo-epel
-  - name: filebeat
-    import_role:
-      name: geerlingguy.filebeat
+  collections:
+    - devsec.hardening
+  roles:
+    - devsec.hardening.ssh_hardening
+    - devsec.hardening.os_hardening
+    - elastic.beats
+    - geerlingguy.repo-epel
+    - dj-wasabi.telegraf
+  vars:
+    beats_version: 7.10.2
+    beat: filebeat
+    beat_conf:
+      filebeat:
+        inputs:
+          - type: log
+            enabled: true
+            paths:
+              - /var/log/*.log
