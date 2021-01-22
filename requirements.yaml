@@ -6,8 +6,6 @@ roles:
     version: v7.10.2
   - name: geerlingguy.git
     version: 3.0.0
-  - name: geerlingguy.repo-epel
-    version: 3.0.0
 
 collections:
   - name: devsec.hardening

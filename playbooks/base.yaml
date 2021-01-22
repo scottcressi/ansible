@@ -8,7 +8,6 @@
     - devsec.hardening.ssh_hardening
     - devsec.hardening.os_hardening
     - elastic.beats
-    - geerlingguy.repo-epel
     - dj-wasabi.telegraf
   vars:
     beats_version: 7.10.2
@@ -20,3 +19,4 @@
             enabled: true
             paths:
               - /var/log/*.log
+    telegraf_agent_package_state: latest
