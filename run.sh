@@ -36,8 +36,10 @@ install_prereqs(){
     if ! pgrep vault > /dev/null ; then
         vault server -dev -dev-root-token-id="root" &
     fi
-    pip install -r requirements.txt
+    pip install -r requirements.txt --quiet --quiet
     docker-compose up -d
+    echo
+    echo open in browser: http://localhost:8000
 }
 
 if [ $# -eq 0 ] ; then print_help ; exit 0 ; fi
