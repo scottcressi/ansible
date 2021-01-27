@@ -1,3 +1,4 @@
+---
 version: "3.8"
 
 services:
@@ -6,4 +7,4 @@ services:
     image: docker.io/recordsansible/ara-api:latest
     container_name: ansible-ara
     ports:
-        - 8000:8000
+      - 8000:8000

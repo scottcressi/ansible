@@ -41,13 +41,13 @@ install_prereqs(){
 
 while [ $# -gt 0 ]; do
   case "$1" in
-    --playbook|-p) PLAYBOOK=$2 ;;
-    --env) ENV=$2 ;;
-    --limit) LIMIT=$2 ;;
-    --apply) NOOP= ;;
-    --install-prereqs) install_prereqs && exit 0 ;;
-    --test-ara) docker exec -ti ansible-ara sh -c "ara playbook list" && exit 0 ;;
-    *) echo invalid option && exit 0 ;;
+    --playbook|-p) PLAYBOOK=$2 ; break ;;
+    --env) ENV=$2 ; break ;;
+    --limit) LIMIT=$2 ; break ;;
+    --apply) NOOP= ; break ;;
+    --install-prereqs) install_prereqs ; break ;;
+    --test-ara) docker exec -ti ansible-ara sh -c "ara playbook list" ; break ;;
+    *) echo invalid option ; exit 0 ;;
   esac
   shift
 done
