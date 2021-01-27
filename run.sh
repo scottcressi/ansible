@@ -7,13 +7,15 @@ if ! command -v yamllint > /dev/null ; then echo yamllint is not installed ;  ex
 # help
 if [ $# -eq 0 ] ; then
     echo """
-options:
+options for testing and prereqs
+--install-prereqs
+--test-ara
+
+options for running:
 --playbook PLAYBOOK ex. --playbook playbooks/tet.yaml
 --env ENV           ex. --env dev
 --limit LIMIT       ex. --limit git
---install-prereqs
 --apply
---test-ara
 """
     exit 0
 fi
