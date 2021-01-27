@@ -36,7 +36,7 @@ install_prereqs(){
     if ! pgrep vault > /dev/null ; then
         vault server -dev -dev-root-token-id="root" &
     fi
-    pip install --upgrade -r requirements.txt
+    pip install -r requirements.txt
     docker-compose up -d
 }
 
