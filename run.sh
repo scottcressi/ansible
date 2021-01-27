@@ -4,22 +4,7 @@ if ! command -v python3 > /dev/null ; then echo python3 is not installed ;  exit
 if ! command -v ansible > /dev/null ; then echo ansible is not installed ;  exit 0 ; fi
 if ! command -v yamllint > /dev/null ; then echo yamllint is not installed ;  exit 0 ; fi
 
-# help
-if [ $# -eq 0 ] ; then
-    echo """
-options for testing and prereqs
---install-prereqs
---test-ara
-
-options for running:
---playbook PLAYBOOK ex. --playbook playbooks/tet.yaml
---env ENV           ex. --env dev
---limit LIMIT       ex. --limit git
---apply
-"""
-    exit 0
-fi
-
+# hosts
 export ANSIBLE_HOST_KEY_CHECKING=False
 
 # ansible run analysis
@@ -32,6 +17,20 @@ NOOP="--check"
 ENV="test"
 LIMIT="test"
 
+print_help(){
+    echo """
+    options for testing and prereqs
+    --install-prereqs
+    --test-ara
+
+    options for running:
+    --playbook PLAYBOOK ex. --playbook playbooks/tet.yaml
+    --env ENV           ex. --env dev
+    --limit LIMIT       ex. --limit git
+    --apply
+    """
+}
+
 install_prereqs(){
     if ! command -v vault > /dev/null ; then echo vault is not installed ;  exit 0 ; fi
     if ! pgrep vault > /dev/null ; then
@@ -41,6 +40,8 @@ install_prereqs(){
     docker-compose up -d
 }
 
+if [ $# -eq 0 ] ; then print_help ; exit 0 ; fi
+
 while [ $# -gt 0 ]; do
   case "$1" in
     --playbook|-p) PLAYBOOK=$2 ; break ;;
@@ -49,7 +50,8 @@ while [ $# -gt 0 ]; do
     --apply) NOOP= ; break ;;
     --install-prereqs) install_prereqs ; exit 0 ;;
     --test-ara) docker exec -ti ansible-ara sh -c "ara playbook list" ; exit 0 ;;
-    *) echo invalid option ; exit 0 ;;
+    --help|-h) print_help ; exit 0 ;;
+    *) echo invalid option ; print_help ; exit 0 ;;
   esac
   shift
 done
