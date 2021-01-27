@@ -36,7 +36,7 @@ install_prereqs(){
         vault server -dev -dev-root-token-id="root" &
     fi
     pip install --upgrade -r requirements.txt
-
+    docker-compose up -d
 }
 
 while [ $# -gt 0 ]; do
