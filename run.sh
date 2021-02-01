@@ -1,17 +1,5 @@
 #!/usr/bin/env sh
 
-if ! command -v python3 > /dev/null ; then echo python3 is not installed ;  exit 0 ; fi
-if ! command -v ansible > /dev/null ; then echo ansible is not installed ;  exit 0 ; fi
-if ! command -v yamllint > /dev/null ; then echo yamllint is not installed ;  exit 0 ; fi
-
-# hosts
-export ANSIBLE_HOST_KEY_CHECKING=False
-
-# ansible run analysis
-export ANSIBLE_CALLBACK_PLUGINS="$(python3 -m ara.setup.callback_plugins)"
-export ARA_API_CLIENT="http"
-export ARA_API_SERVER="http://127.0.0.1:8000"
-
 # defaults
 NOOP="--check"
 ENV="test"
@@ -36,7 +24,7 @@ install_prereqs(){
     if ! pgrep vault > /dev/null ; then
         vault server -dev -dev-root-token-id="root" &
     fi
-    pip install -r requirements.txt --quiet --quiet
+    pip install -r requirements.txt
     docker-compose up -d
     echo
     echo open in browser: http://localhost:8000
@@ -57,6 +45,18 @@ while [ $# -gt 0 ]; do
   esac
   shift
 done
+
+if ! command -v python3 > /dev/null ; then echo python3 is not installed ;  exit 0 ; fi
+if ! command -v ansible > /dev/null ; then echo ansible is not installed ;  exit 0 ; fi
+if ! command -v yamllint > /dev/null ; then echo yamllint is not installed ;  exit 0 ; fi
+
+# hosts
+export ANSIBLE_HOST_KEY_CHECKING=False
+
+# ansible run analysis
+export ANSIBLE_CALLBACK_PLUGINS="$(python3 -m ara.setup.callback_plugins)"
+export ARA_API_CLIENT="http"
+export ARA_API_SERVER="http://127.0.0.1:8000"
 
 if [ "$ENV" = test ] ; then
     CONNECTION=--connection=local
