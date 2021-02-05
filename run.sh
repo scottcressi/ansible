@@ -12,7 +12,7 @@ print_help(){
 
     options for testing
     --test-ara          # test ara once ansible is run
-    --test-ansible      # test ansible in a docker
+    --test-docker       # test ansible in a docker
     --test-vagrant      # test ansible in a vagrant
 
     options for running:
@@ -34,7 +34,7 @@ install_prereqs(){
     echo open in browser: http://localhost:8000
 }
 
-test_ansible(){
+test_docker(){
     docker build -t ansible-test .
     docker run -ti -v "$(pwd)":/test ansible-test
 }
@@ -49,7 +49,7 @@ while [ $# -gt 0 ]; do
     --apply) NOOP= ; break ;;
     --install-prereqs) install_prereqs ; exit 0 ;;
     --test-ara) docker exec -ti ansible-ara sh -c "ara playbook list" ; exit 0 ;;
-    --test-ansible) test_ansible ; exit 0 ;;
+    --test-docker) test_docker ; exit 0 ;;
     --test-vagrant) vagrant up ; vagrant ssh -c "cd ~/ansible ; bash run.sh -p playbooks/test.yaml" ; exit 0 ;;
     --help|-h) print_help ; exit 0 ;;
     *) echo invalid option ; print_help ; exit 0 ;;
