@@ -8,15 +8,16 @@ LIMIT="test"
 print_help(){
     echo """
     options for testing and prereqs
-    --install-prereqs
-    --test-ara
-    --test-ansible
+    --install-prereqs   # installs pip requirements, sets up vault and ara
+    --test-ara          # test ara once ansible is run
+    --test-ansible      # test ansible in a docker
+    --test-vagrant      # test ansible in a vagrant
 
     options for running:
-    --playbook PLAYBOOK ex. --playbook playbooks/tet.yaml
-    --env ENV           ex. --env dev
-    --limit LIMIT       ex. --limit git
-    --apply
+    --playbook PLAYBOOK # playbook ex. --playbook playbooks/test.yaml
+    --env ENV           # environment ex. --env dev
+    --limit LIMIT       # limits to host groups in inventory ex. --limit git
+    --apply             # applies (noop by default)
     """
 }
 
@@ -47,6 +48,7 @@ while [ $# -gt 0 ]; do
     --install-prereqs) install_prereqs ; exit 0 ;;
     --test-ara) docker exec -ti ansible-ara sh -c "ara playbook list" ; exit 0 ;;
     --test-ansible) test_ansible ; exit 0 ;;
+    --test-vagrant) vagrant up ; vagrant ssh -c "cd ~/ansible ; bash run.sh -p playbooks/test.yaml" ; exit 0 ;;
     --help|-h) print_help ; exit 0 ;;
     *) echo invalid option ; print_help ; exit 0 ;;
   esac
