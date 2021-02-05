@@ -7,8 +7,10 @@ LIMIT="test"
 
 print_help(){
     echo """
-    options for testing and prereqs
+    options for prereqs
     --install-prereqs   # installs pip requirements, sets up vault and ara
+
+    options for testing
     --test-ara          # test ara once ansible is run
     --test-ansible      # test ansible in a docker
     --test-vagrant      # test ansible in a vagrant
