@@ -9,4 +9,4 @@ roles:
 
 collections:
   - name: devsec.hardening
-    version: 7.0.0
+    version: 7.1.0
