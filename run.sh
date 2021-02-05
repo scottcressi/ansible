@@ -33,7 +33,7 @@ install_prereqs(){
 
 test_ansible(){
     docker build -t ansible-test .
-    docker run -ti -v `pwd`:/test ansible-test
+    docker run -ti -v "$(pwd)":/test ansible-test
 }
 
 if [ $# -eq 0 ] ; then print_help ; exit 0 ; fi

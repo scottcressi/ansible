@@ -6,4 +6,4 @@ run yum install -y \
 run pip3 install \
     ansible \
     yamllint
-
+run ssh-keygen -A
