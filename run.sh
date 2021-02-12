@@ -82,6 +82,6 @@ ansible-playbook \
     -i inventories/inventory-"$ENV".yaml \
     --limit "$LIMIT" \
     --diff \
-    $NOOP \
+    "$NOOP" \
     --become \
     "$CONNECTION"
