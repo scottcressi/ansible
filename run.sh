@@ -50,7 +50,7 @@ while [ $# -gt 0 ]; do
     --install-prereqs) install_prereqs ; exit 0 ;;
     --test-ara) docker exec -ti ansible-ara sh -c "ara playbook list" ; exit 0 ;;
     --test-docker) test_docker ; exit 0 ;;
-    --test-vagrant) vagrant up ; vagrant ssh -c "cd ~/ansible ; bash run.sh -p playbooks/test.yaml" ; exit 0 ;;
+    --test-vagrant) vagrant up ; vagrant ssh -c "cd ~/ansible ; bash run.sh -p playbooks/test.yaml --apply" ; exit 0 ;;
     --help|-h) print_help ; exit 0 ;;
     *) echo invalid option ; print_help ; exit 0 ;;
   esac
