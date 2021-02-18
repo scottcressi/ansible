@@ -1,4 +1,5 @@
 ansible
 ara
 hvac
+molecule[docker,lint]
 yamllint
