@@ -82,15 +82,8 @@ if [ "$ENV" = test ] ; then
     CONNECTION=--connection=local
 fi
 
-yamllint . -s
 ansible-galaxy install -r requirements.yaml
-echo
-ansible-playbook \
-    "$PLAYBOOK" \
-    -e ansible_python_interpreter=/usr/bin/python3 \
-    -i inventories/inventory-"$ENV".yaml \
-    --limit "$LIMIT" \
-    --diff \
-    "$NOOP" \
-    --become \
-    "$CONNECTION"
+yamllint . -s
+ansible-lint "$PLAYBOOK"
+ansible-playbook "$PLAYBOOK" -e ansible_python_interpreter=/usr/bin/python3 -i inventories/inventory-"$ENV".yaml --limit "$LIMIT" --diff "$NOOP" --become "$CONNECTION" --syntax-check
+ansible-playbook "$PLAYBOOK" -e ansible_python_interpreter=/usr/bin/python3 -i inventories/inventory-"$ENV".yaml --limit "$LIMIT" --diff "$NOOP" --become "$CONNECTION"
