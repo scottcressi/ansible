@@ -95,11 +95,9 @@ if [ "$ENV" = test ] ; then
 fi
 
 echo galaxy
-echo
 ansible-galaxy install -r requirements.yaml
 
 echo yamllint
-echo
 find playbooks/ inventories/ roles/ \
     -not -path "roles/*/.travis.yml" \
     -not -path "roles/*/meta/main.yml" \
@@ -108,13 +106,10 @@ find playbooks/ inventories/ roles/ \
     -type f | xargs yamllint -s
 
 echo ansible lint
-echo
 ansible-lint --exclude ../../../.ansible/roles/ "$PLAYBOOK"
 
 echo ansible playbook syntax check
-echo
 ansible-playbook "$PLAYBOOK" -e ansible_python_interpreter=/usr/bin/python3 -i inventories/inventory-"$ENV".yaml --limit "$LIMIT" --diff "$NOOP" --become "$CONNECTION" --syntax-check
 
 echo ansible playbook run
-echo
 ansible-playbook "$PLAYBOOK" -e ansible_python_interpreter=/usr/bin/python3 -i inventories/inventory-"$ENV".yaml --limit "$LIMIT" --diff "$NOOP" --become "$CONNECTION"
