@@ -8,7 +8,9 @@ LIMIT="test"
 print_help(){
     echo """
     options for prereqs
-    --install-prereqs   # installs pip requirements, sets up vault and ara
+    --setup-pip         # installs pip requirements
+    --setup-vault       # sets up vault
+    --setup-ara         # sets up ara
 
     options for testing
     --test-ara          # test ara once ansible is run
@@ -23,12 +25,16 @@ print_help(){
     """
 }
 
-install_prereqs(){
+setup_vault(){
     if ! command -v vault > /dev/null ; then echo vault is not installed ;  exit 0 ; fi
     if ! pgrep vault > /dev/null ; then
         vault server -dev -dev-root-token-id="root" &
     fi
-    pip install -r requirements.txt
+    echo
+    echo open in browser: http://localhost:8200
+}
+
+setup_ara(){
     docker-compose up -d
     echo
     echo open in browser: http://localhost:8000
@@ -44,7 +50,11 @@ test_vagrant(){
     vagrant ssh -c "cd ~/ansible ; bash run.sh -p playbooks/test.yaml --apply"
 }
 
-test_docker(){
+setup_pip(){
+    pip install -r requirements.txt
+}
+
+test_ara(){
     docker exec -ti ansible-ara sh -c "ara playbook list"
 }
 
@@ -56,8 +66,10 @@ while [ $# -gt 0 ]; do
     --env) ENV=$2 ; break ;;
     --limit) LIMIT=$2 ; break ;;
     --apply) NOOP= ; break ;;
-    --install-prereqs) install_prereqs ; exit 0 ;;
-    --test-ara) test_docker ; exit 0 ;;
+    --setup-pip) setup_pip ; exit 0 ;;
+    --setup-vault) setup_vault ; exit 0 ;;
+    --setup-ara) setup_ara ; exit 0 ;;
+    --test-ara) test_ara ; exit 0 ;;
     --test-docker) test_docker ; exit 0 ;;
     --test-vagrant) test_vagrant ; exit 0 ;;
     --help|-h) print_help ; exit 0 ;;
