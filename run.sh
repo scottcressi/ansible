@@ -29,7 +29,9 @@ setup_vault(){
     if ! command -v vault > /dev/null ; then echo vault is not installed ;  exit 0 ; fi
     if ! pgrep vault > /dev/null ; then
         vault server -dev -dev-root-token-id="root" &
+        sleep 2
     fi
+    vault kv put -address http://127.0.0.1:8200 secret/hello foo=bar
     echo
     echo open in browser: http://localhost:8200
 }
