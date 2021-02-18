@@ -101,15 +101,15 @@ ansible-galaxy install -r requirements.yaml
 echo yamllint
 echo
 find playbooks/ inventories/ roles/ \
-    -not -path roles/test/.travis.yml \
-    -not -path roles/test/meta/main.yml \
-    -not -path roles/test/README.md \
-    -not -path roles/test/tests/inventory \
+    -not -path "roles/*/.travis.yml" \
+    -not -path "roles/*/meta/main.yml" \
+    -not -path "roles/*/README.md" \
+    -not -path "roles/*/tests/inventory" \
     -type f | xargs yamllint -s
 
 echo ansible lint
 echo
-ansible-lint "$PLAYBOOK"
+ansible-lint --exclude ../../../.ansible/roles/ "$PLAYBOOK"
 
 echo ansible playbook syntax check
 echo
