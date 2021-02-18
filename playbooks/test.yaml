@@ -16,5 +16,6 @@
       default: localhost
 
   tasks:
-    - import_role:
-       name: roles/test
+    - name: import role
+      import_role:
+        name: roles/test

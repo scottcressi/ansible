@@ -94,8 +94,27 @@ if [ "$ENV" = test ] ; then
     CONNECTION=--connection=local
 fi
 
+echo galaxy
+echo
 ansible-galaxy install -r requirements.yaml
-yamllint . -s
+
+echo yamllint
+echo
+find playbooks/ inventories/ roles/ \
+    -not -path roles/test/.travis.yml \
+    -not -path roles/test/meta/main.yml \
+    -not -path roles/test/README.md \
+    -not -path roles/test/tests/inventory \
+    -type f | xargs yamllint -s
+
+echo ansible lint
+echo
 ansible-lint "$PLAYBOOK"
+
+echo ansible playbook syntax check
+echo
 ansible-playbook "$PLAYBOOK" -e ansible_python_interpreter=/usr/bin/python3 -i inventories/inventory-"$ENV".yaml --limit "$LIMIT" --diff "$NOOP" --become "$CONNECTION" --syntax-check
+
+echo ansible playbook run
+echo
 ansible-playbook "$PLAYBOOK" -e ansible_python_interpreter=/usr/bin/python3 -i inventories/inventory-"$ENV".yaml --limit "$LIMIT" --diff "$NOOP" --become "$CONNECTION"
