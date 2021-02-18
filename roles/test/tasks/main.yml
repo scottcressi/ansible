@@ -1,0 +1,42 @@
+---
+# tasks file for test
+
+- name: testdir
+  file:
+    path: /tmp/some_directory
+    state: directory
+    mode: 0755
+
+- name: testfile
+  copy:
+    dest: /tmp/some_file
+    content: |
+      dog1
+      tiger
+
+# https://docs.ansible.com/ansible/latest/collections/community/general/hashi_vault_lookup.html#examples
+- name: get vault value
+  ansible.builtin.debug:
+    msg: "{{ lookup('community.general.hashi_vault',
+    'secret=secret/data/hello
+    token={{ vault_token }}
+    url=http://{{ vault_server }}:8200'
+    )}}"
+
+- name: set vault secret
+  ansible.builtin.set_fact:
+    my_secrets: "{{ lookup('community.general.hashi_vault',
+    'secret=secret/data/hello
+    token={{ vault_token }}
+    url=http://{{ vault_server }}:8200') }}"
+- ansible.builtin.debug:
+    msg: "{{ my_secrets['foo'] }}"
+- ansible.builtin.debug:
+    msg: "Secret '{{ item.key }}' has value '{{ item.value }}'"
+  loop: "{{ my_secrets | dict2items }}"
+
+- name: testfile_vault
+  copy:
+    dest: /tmp/some_file_vault
+    content: |
+      {{ my_secrets['foo'] }}
