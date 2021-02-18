@@ -1,13 +1,13 @@
 ---
 # tasks file for test
 
-- name: testdir
+- name: create dir
   file:
     path: /tmp/some_directory
     state: directory
     mode: 0755
 
-- name: testfile
+- name: create file
   copy:
     dest: /tmp/some_file
     content: |
@@ -22,7 +22,7 @@
     token={{ vault_token }}
     url=http://{{ vault_server }}:8200') }}"
 
-- name: testfile_vault
+- name: print vault secret
   copy:
     dest: /tmp/some_file_vault
     content: |

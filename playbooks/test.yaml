@@ -5,12 +5,12 @@
 
   vars_prompt:
 
-    - name: vault_token
+    - name: set vault_token
       prompt: What is the vault token?
       private: "yes"
       default: root
 
-    - name: vault_server
+    - name: set vault_server
       prompt: What is the vault server?
       private: "no"
       default: localhost
