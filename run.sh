@@ -57,7 +57,7 @@ setup_pip(){
 }
 
 test_ara(){
-    docker exec -ti ansible-ara sh -c "ara playbook list"
+    docker exec -ti ansible-ara sh -c "ara playbook list --long"
 }
 
 if [ $# -eq 0 ] ; then print_help ; exit 0 ; fi
