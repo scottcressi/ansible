@@ -1,0 +1,8 @@
+---
+- hosts: all
+
+  tasks:
+
+    - name: import iptables
+      import_role:
+        name: roles/iptables

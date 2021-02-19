@@ -1,6 +1,4 @@
 ---
-# - import_playbook: base.yaml
-
 - hosts: all
 
   vars_prompt:
@@ -16,6 +14,6 @@
       default: localhost
 
   tasks:
-    - name: import role
+    - name: import test
       import_role:
         name: roles/test
