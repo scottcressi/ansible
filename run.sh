@@ -1,10 +1,5 @@
 #!/usr/bin/env sh
 
-# defaults
-NOOP="--check"
-ENV="test"
-LIMIT="test"
-
 print_help(){
     echo """
     options for prereqs
@@ -60,25 +55,32 @@ test_ara(){
     docker exec -ti ansible-ara sh -c "ara playbook list --long"
 }
 
-if [ $# -eq 0 ] ; then print_help ; exit 0 ; fi
-
-while [ $# -gt 0 ]; do
+TEMP=$(getopt -o epla --long environment:,playbook:,limit:,apply,setup-pip,setup-vault,setup-ara,test-ara,test-docker,test-vagrant,help \
+             -n 'case' -- "$@")
+while true; do
   case "$1" in
-    --playbook|-p) PLAYBOOK=$2 ; break ;;
-    --env) ENV=$2 ; break ;;
-    --limit) LIMIT=$2 ; break ;;
-    --apply) NOOP= ; break ;;
-    --setup-pip) setup_pip ; exit 0 ;;
-    --setup-vault) setup_vault ; exit 0 ;;
-    --setup-ara) setup_ara ; exit 0 ;;
-    --test-ara) test_ara ; exit 0 ;;
-    --test-docker) test_docker ; exit 0 ;;
-    --test-vagrant) test_vagrant ; exit 0 ;;
-    --help|-h) print_help ; exit 0 ;;
-    *) echo invalid option ; print_help ; exit 0 ;;
+    -e | --environment ) ENVIRONMENT="$2"; shift 2 ;;
+    -p | --playbook ) PLAYBOOK="$2"; shift 2 ;;
+    -l | --limit) LIMIT=$2 ; shift 2 ;;
+    -a | --apply) NOOP="" ; break ;;
+    --setup-pip) setup_pip ; break ;;
+    --setup-vault) setup_vault ; break ;;
+    --setup-ara) setup_ara ; break ;;
+    --test-ara) test_ara ; break ;;
+    --test-docker) test_docker ; break ;;
+    --test-vagrant) test_vagrant ; break ;;
+    -h | --help) print_help ; break ;;
+    -- ) shift; break ;;
+    * ) break ;;
   esac
-  shift
 done
+
+# flag checks
+if [[ $* != *--apply* ]] ; then
+    NOOP="--check"
+fi
+if [ -z $ENVIRONMENT ] ; then echo missing --environment ; exit 1 ; fi
+if [ -z $PLAYBOOK ] ; then echo missing --playbook ; exit 1 ; fi
 
 if ! command -v python3 > /dev/null ; then echo python3 is not installed ;  exit 0 ; fi
 if ! command -v ansible > /dev/null ; then echo ansible is not installed ;  exit 0 ; fi
@@ -93,26 +95,22 @@ export ANSIBLE_CALLBACK_PLUGINS="$(python3 -m ara.setup.callback_plugins)"
 export ARA_API_CLIENT="http"
 export ARA_API_SERVER="http://127.0.0.1:8000"
 
-if [ "$ENV" = test ] ; then
-    CONNECTION=--connection=local
-fi
-
-echo galaxy
-ansible-galaxy install -r requirements.yaml
-
 echo yamllint
 find playbooks/ inventories/ roles/ \
     -not -path "roles/*/.travis.yml" \
     -not -path "roles/*/meta/main.yml" \
     -not -path "roles/*/README.md" \
     -not -path "roles/*/tests/inventory" \
-    -type f | xargs yamllint -s
+    -type f | xargs yamllint -s -d "{extends: relaxed, rules: {line-length: {max: 120}}}"
 
 echo ansible lint
 ansible-lint --exclude ../../../.ansible/roles/ "$PLAYBOOK"
 
 echo ansible playbook syntax check
-ansible-playbook "$PLAYBOOK" -i inventories/"$ENV".yaml --check --syntax-check
+ansible-playbook "$PLAYBOOK" -i inventories/"$ENVIRONMENT".yaml --check --syntax-check
+
+echo galaxy
+ansible-galaxy install -r requirements.yaml
 
 echo ansible playbook run
-ansible-playbook "$PLAYBOOK" -e ansible_python_interpreter=/usr/bin/python3 -i inventories/inventory-"$ENV".yaml --limit "$LIMIT" --diff "$NOOP" --become "$CONNECTION"
+ansible-playbook "$PLAYBOOK" -i inventories/"$ENVIRONMENT".yaml --limit "$LIMIT" --diff "$NOOP"
