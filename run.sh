@@ -69,6 +69,11 @@ lint(){
     done
 }
 
+if [[ $# -eq 0 ]] ; then
+    print_help
+    exit 0
+fi
+
 TEMP=$(getopt -o h --long inventory:,playbook:,limit:,apply,setup-pip,setup-vault,setup-ara,test-ara,test-vagrant,lint,help \
              -n 'case' -- "$@")
 while true; do
@@ -79,7 +84,7 @@ while true; do
     --test-ara) test_ara ; break ;;
     --test-vagrant) test_vagrant ; break ;;
     --lint) lint ; break ;;
-    -h | --help) print_help ; break ;;
+    -h | --help) print_help ; exit 0 ;;
     -- ) shift; break ;;
     * ) break ;;
   esac
