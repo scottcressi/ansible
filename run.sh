@@ -96,10 +96,6 @@ while true; do
   esac
 done
 
-# hosts
-export ANSIBLE_HOST_KEY_CHECKING=False
-export ANSIBLE_NOCOWS=1
-
 # ansible run analysis
 export ANSIBLE_CALLBACK_PLUGINS="$(python3 -m ara.setup.callback_plugins)"
 export ARA_API_CLIENT="http"
