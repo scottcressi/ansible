@@ -13,7 +13,6 @@ print_help(){
 
     options for testing
     --test-ara              # test ara once ansible is run
-    --test-docker           # test ansible in a docker
     --test-vagrant          # test ansible in a vagrant
 
     options for running:
@@ -39,11 +38,6 @@ setup_ara(){
     docker-compose up -d
     echo
     echo open in browser: http://127.0.0.1:8000
-}
-
-test_docker(){
-    docker build -t ansible-test .
-    docker run -ti -v "$(pwd)":/test ansible-test
 }
 
 test_vagrant(){
@@ -79,7 +73,7 @@ lint(){
     done
 }
 
-TEMP=$(getopt -o h --long inventory:,playbook:,limit:,apply,setup-pip,setup-vault,setup-ara,test-ara,test-docker,test-vagrant,lint,help \
+TEMP=$(getopt -o h --long inventory:,playbook:,limit:,apply,setup-pip,setup-vault,setup-ara,test-ara,test-vagrant,lint,help \
              -n 'case' -- "$@")
 while true; do
   case "$1" in
@@ -87,7 +81,6 @@ while true; do
     --setup-vault) setup_vault ; break ;;
     --setup-ara) setup_ara ; break ;;
     --test-ara) test_ara ; break ;;
-    --test-docker) test_docker ; break ;;
     --test-vagrant) test_vagrant ; break ;;
     --lint) lint ; break ;;
     -h | --help) print_help ; break ;;
