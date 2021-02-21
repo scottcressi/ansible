@@ -48,7 +48,7 @@ test_docker(){
 
 test_vagrant(){
     vagrant up
-    vagrant ssh -c "cd ~/ansible ; bash run.sh -p playbooks/test.yaml --apply"
+    ansible-playbook --inventory inventories/vagrant.yaml --check --diff playbooks/test.yaml
 }
 
 setup_pip(){
