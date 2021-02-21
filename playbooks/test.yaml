@@ -1,18 +1,6 @@
 ---
 - hosts: all
 
-  vars_prompt:
-
-    - name: set vault_token
-      prompt: What is the vault token?
-      private: "yes"
-      default: root
-
-    - name: set vault_server
-      prompt: What is the vault server?
-      private: "no"
-      default: localhost
-
   tasks:
     - name: import test
       import_role:
