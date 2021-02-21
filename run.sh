@@ -113,4 +113,4 @@ echo galaxy
 ansible-galaxy install -r requirements.yaml
 
 echo ansible playbook run
-ansible-playbook "$PLAYBOOK" -i inventories/"$ENVIRONMENT".yaml --limit "$LIMIT" --diff "$NOOP"
+echo ansible-playbook "$PLAYBOOK" -i inventories/"$ENVIRONMENT".yaml --diff "$NOOP"
