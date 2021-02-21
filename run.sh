@@ -7,14 +7,11 @@ print_help(){
     --setup-vault           # sets up vault
 
     options for testing
-    --test-ara              # test ara once ansible is run
-    --test-vagrant          # test ansible in a vagrant
+    --test-ara              # test ara once ansible is run without --check
+    --test-vagrant          # test ansible in vagrant
+    --lint                  # lint everything
 
     options for running:
-    --playbook PLAYBOOK     # playbook ex. --playbook playbooks/test.yaml
-    --inventory INVENTORY   # inventory ex. --env inventory
-    --limit LIMIT           # limits to host groups in inventory ex. --limit git
-    --apply                 # applies (noop by default)
     """
 }
 
@@ -76,7 +73,7 @@ if [[ $# -eq 0 ]] ; then
     exit 0
 fi
 
-TEMP=$(getopt -o h --long inventory:,playbook:,limit:,apply,setup-pip,setup-vault,test-ara,test-vagrant,lint,help \
+TEMP=$(getopt -o h --long setup-pip,setup-vault,test-ara,test-vagrant,lint,help \
              -n 'case' -- "$@")
 while true; do
   case "$1" in
