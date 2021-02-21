@@ -33,13 +33,13 @@ setup_vault(){
     fi
     vault kv put -address http://127.0.0.1:8200 secret/hello foo=bar
     echo
-    echo open in browser: http://localhost:8200
+    echo open in browser: http://127.0.0.1:8200
 }
 
 setup_ara(){
     docker-compose up -d
     echo
-    echo open in browser: http://localhost:8000
+    echo open in browser: http://127.0.0.1:8000
 }
 
 test_docker(){
@@ -112,7 +112,7 @@ echo ansible lint
 ansible-lint --exclude ../../../.ansible/roles/ "$PLAYBOOK"
 
 echo ansible playbook syntax check
-ansible-playbook "$PLAYBOOK" -e ansible_python_interpreter=/usr/bin/python3 -i inventories/inventory-"$ENV".yaml --limit "$LIMIT" --diff "$NOOP" --become "$CONNECTION" --syntax-check
+ansible-playbook "$PLAYBOOK" -i inventories/"$ENV".yaml --check --syntax-check
 
 echo ansible playbook run
 ansible-playbook "$PLAYBOOK" -e ansible_python_interpreter=/usr/bin/python3 -i inventories/inventory-"$ENV".yaml --limit "$LIMIT" --diff "$NOOP" --become "$CONNECTION"
