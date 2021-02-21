@@ -96,9 +96,6 @@ while true; do
   esac
 done
 
-# ansible run analysis
-export ANSIBLE_CALLBACK_PLUGINS="$(python3 -m ara.setup.callback_plugins)"
-
 # galaxy
 ansible-galaxy install -r requirements.yaml
 
