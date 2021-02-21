@@ -1,9 +1,5 @@
 #!/usr/bin/env sh
 
-if ! command -v python3 > /dev/null ; then echo python3 is not installed ;  exit 0 ; fi
-if ! command -v ansible > /dev/null ; then echo ansible is not installed ;  exit 0 ; fi
-if ! command -v yamllint > /dev/null ; then echo yamllint is not installed ;  exit 0 ; fi
-
 print_help(){
     echo """
     options for prereqs
@@ -88,6 +84,10 @@ while true; do
     * ) break ;;
   esac
 done
+
+if ! command -v python3 > /dev/null ; then echo python3 is not installed ;  exit 0 ; fi
+if ! command -v ansible > /dev/null ; then echo ansible is not installed ;  exit 0 ; fi
+if ! command -v yamllint > /dev/null ; then echo yamllint is not installed ;  exit 0 ; fi
 
 # galaxy
 ansible-galaxy install -r requirements.yaml
