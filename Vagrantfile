@@ -5,6 +5,7 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.ssh.guest_port = "2222"
   config.vm.box = "centos/8"
   config.vm.box_version = "2011.0"
   config.vm.network "private_network", type: "dhcp"
