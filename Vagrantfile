@@ -13,6 +13,5 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.cpus = 1
   end
   config.vm.provision "shell", inline: <<-SHELL
-    ip -oneline a | grep eth1 | grep dynamic | awk '{print $4}'
 SHELL
 end
