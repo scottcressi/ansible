@@ -1,22 +1,26 @@
 #!/usr/bin/env sh
 
+if ! command -v python3 > /dev/null ; then echo python3 is not installed ;  exit 0 ; fi
+if ! command -v ansible > /dev/null ; then echo ansible is not installed ;  exit 0 ; fi
+if ! command -v yamllint > /dev/null ; then echo yamllint is not installed ;  exit 0 ; fi
+
 print_help(){
     echo """
     options for prereqs
-    --setup-pip         # installs pip requirements
-    --setup-vault       # sets up vault
-    --setup-ara         # sets up ara
+    --setup-pip             # installs pip requirements
+    --setup-vault           # sets up vault
+    --setup-ara             # sets up ara
 
     options for testing
-    --test-ara          # test ara once ansible is run
-    --test-docker       # test ansible in a docker
-    --test-vagrant      # test ansible in a vagrant
+    --test-ara              # test ara once ansible is run
+    --test-docker           # test ansible in a docker
+    --test-vagrant          # test ansible in a vagrant
 
     options for running:
-    --playbook PLAYBOOK # playbook ex. --playbook playbooks/test.yaml
-    --env ENV           # environment ex. --env dev
-    --limit LIMIT       # limits to host groups in inventory ex. --limit git
-    --apply             # applies (noop by default)
+    --playbook PLAYBOOK     # playbook ex. --playbook playbooks/test.yaml
+    --inventory INVENTORY   # inventory ex. --env inventory
+    --limit LIMIT           # limits to host groups in inventory ex. --limit git
+    --apply                 # applies (noop by default)
     """
 }
 
@@ -55,36 +59,42 @@ test_ara(){
     docker exec -ti ansible-ara sh -c "ara playbook list --long"
 }
 
-TEMP=$(getopt -o epla --long environment:,playbook:,limit:,apply,setup-pip,setup-vault,setup-ara,test-ara,test-docker,test-vagrant,help \
+lint(){
+    # yamllint
+    find playbooks/ inventories/ roles/ \
+        -not -path "roles/*/.travis.yml" \
+        -not -path "roles/*/meta/main.yml" \
+        -not -path "roles/*/README.md" \
+        -not -path "roles/*/tests/inventory" \
+        -type f | xargs yamllint -s -d "{extends: relaxed, rules: {line-length: {max: 120}}}"
+
+    # ansible lint
+    for i in $(find playbooks -type f) ; do
+        ansible-lint --exclude ../../../.ansible/roles/ "$i"
+    done
+
+    # ansible playbook syntax check
+    for i in $(find playbooks -type f) ; do
+        ansible-playbook "$i" -i inventories/vagrant.yaml --check --syntax-check
+    done
+}
+
+TEMP=$(getopt -o h --long inventory:,playbook:,limit:,apply,setup-pip,setup-vault,setup-ara,test-ara,test-docker,test-vagrant,lint,help \
              -n 'case' -- "$@")
 while true; do
   case "$1" in
-    -e | --environment ) ENVIRONMENT="$2"; shift 2 ;;
-    -p | --playbook ) PLAYBOOK="$2"; shift 2 ;;
-    -l | --limit) LIMIT=$2 ; shift 2 ;;
-    -a | --apply) NOOP="" ; break ;;
     --setup-pip) setup_pip ; break ;;
     --setup-vault) setup_vault ; break ;;
     --setup-ara) setup_ara ; break ;;
     --test-ara) test_ara ; break ;;
     --test-docker) test_docker ; break ;;
     --test-vagrant) test_vagrant ; break ;;
+    --lint) lint ; break ;;
     -h | --help) print_help ; break ;;
     -- ) shift; break ;;
     * ) break ;;
   esac
 done
-
-# flag checks
-if [[ $* != *--apply* ]] ; then
-    NOOP="--check"
-fi
-if [ -z $ENVIRONMENT ] ; then echo missing --environment ; exit 1 ; fi
-if [ -z $PLAYBOOK ] ; then echo missing --playbook ; exit 1 ; fi
-
-if ! command -v python3 > /dev/null ; then echo python3 is not installed ;  exit 0 ; fi
-if ! command -v ansible > /dev/null ; then echo ansible is not installed ;  exit 0 ; fi
-if ! command -v yamllint > /dev/null ; then echo yamllint is not installed ;  exit 0 ; fi
 
 # hosts
 export ANSIBLE_HOST_KEY_CHECKING=False
@@ -95,22 +105,13 @@ export ANSIBLE_CALLBACK_PLUGINS="$(python3 -m ara.setup.callback_plugins)"
 export ARA_API_CLIENT="http"
 export ARA_API_SERVER="http://127.0.0.1:8000"
 
-echo yamllint
-find playbooks/ inventories/ roles/ \
-    -not -path "roles/*/.travis.yml" \
-    -not -path "roles/*/meta/main.yml" \
-    -not -path "roles/*/README.md" \
-    -not -path "roles/*/tests/inventory" \
-    -type f | xargs yamllint -s -d "{extends: relaxed, rules: {line-length: {max: 120}}}"
-
-echo ansible lint
-ansible-lint --exclude ../../../.ansible/roles/ "$PLAYBOOK"
-
-echo ansible playbook syntax check
-ansible-playbook "$PLAYBOOK" -i inventories/"$ENVIRONMENT".yaml --check --syntax-check
-
-echo galaxy
+# galaxy
 ansible-galaxy install -r requirements.yaml
 
-echo ansible playbook run
-ansible-playbook "$PLAYBOOK" -i inventories/"$ENVIRONMENT".yaml --diff "$NOOP"
+# ansible playbook run
+echo
+echo """
+example command:
+ansible-playbook --inventory inventories/vagrant.yaml --check --diff playbooks/test.yaml
+"""
+echo
