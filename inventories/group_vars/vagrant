@@ -1,0 +1,3 @@
+---
+vault_server: localhost
+vault_token: root
