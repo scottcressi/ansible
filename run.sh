@@ -42,7 +42,7 @@ setup_ara(){
 
 test_vagrant(){
     vagrant up
-    ansible-playbook --inventory inventories/vagrant.yaml --check --diff playbooks/test.yaml
+    ansible-playbook --diff --inventory inventories/vagrant.yaml playbooks/test.yaml
 }
 
 setup_pip(){
@@ -96,6 +96,6 @@ ansible-galaxy install -r requirements.yaml
 echo
 echo """
 example command:
-ansible-playbook --inventory inventories/vagrant.yaml --check --diff playbooks/test.yaml
+ansible-playbook --diff --inventory inventories/vagrant.yaml playbooks/test.yaml --check
 """
 echo
