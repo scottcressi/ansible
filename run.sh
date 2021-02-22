@@ -10,8 +10,6 @@ print_help(){
     --test-ara              # test ara once ansible is run without --check
     --test-vagrant          # test ansible in vagrant
     --lint                  # lint everything
-
-    options for running:
     """
 }
 
