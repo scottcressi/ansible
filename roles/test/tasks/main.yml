@@ -9,6 +9,7 @@
 
 - name: create file
   copy:
+    mode: 0755
     dest: /tmp/some_file
     content: |
       dog1
@@ -24,6 +25,7 @@
 
 - name: print vault secret
   copy:
+    mode: 0755
     dest: /tmp/some_file_vault
     content: |
       {{ my_secrets['foo'] }}

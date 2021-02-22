@@ -57,9 +57,14 @@ lint(){
         -not -path "roles/*/tests/inventory" \
         -type f | xargs yamllint -s -d "{extends: relaxed, rules: {line-length: {max: 120}}}"
 
-    # ansible lint
+    # ansible lint playbooks
     for i in $(find playbooks -type f) ; do
-        ansible-lint --exclude ../../../.ansible/roles/ "$i"
+        ansible-lint "$i"
+    done
+
+    # ansible lint roles
+    for i in $(find roles -maxdepth 1 -mindepth 1) ; do
+        ansible-lint "$i"
     done
 
     # ansible playbook syntax check

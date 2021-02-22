@@ -1,0 +1,5 @@
+exclude_paths:
+  - roles/iptables/meta
+  - roles/test/meta
+  - roles/test/tasks/main.yml
+  - ../../../.ansible/roles

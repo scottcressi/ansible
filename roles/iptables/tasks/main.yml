@@ -4,7 +4,6 @@
 - name: Install the `iptables` package
   package:
     name: iptables
-    state: latest
 
 - name: Flush existing firewall rules
   iptables:
@@ -43,7 +42,7 @@
 
 - name: Install `netfilter-persistent` && `iptables-persistent` packages
   package:
-    name: "{{item}}"
+    name: "{{ item }}"
     state: present
   with_items:
     - iptables-persistent
