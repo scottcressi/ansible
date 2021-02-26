@@ -4,8 +4,6 @@ roles:
     version: 0.13.0
   - name: elastic.beats
     version: v7.10.2
-  - name: geerlingguy.git
-    version: 3.0.0
 
 collections:
   - name: devsec.hardening
