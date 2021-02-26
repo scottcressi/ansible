@@ -10,6 +10,9 @@ print_help(){
     --test-ara              # test ara once ansible is run without --check
     --test-vagrant          # test ansible in vagrant
     --lint                  # lint everything
+
+    run:
+    --run-ansible           # run ansible
     """
 }
 
@@ -32,6 +35,7 @@ setup_ara(){
 
 test_vagrant(){
     vagrant up
+    ansible-galaxy install -r requirements.yaml
     ansible-playbook --diff --inventory inventories/vagrant.yaml playbooks/test.yaml
 }
 
@@ -71,12 +75,25 @@ lint(){
     done
 }
 
-if [[ $# -eq 0 ]] ; then
+run_ansible(){
+    ansible-galaxy install -r requirements.yaml
+    ansible-playbook --diff --inventory inventories/vagrant.yaml playbooks/test.yaml --check
+
+    echo
+    echo """
+    example command:
+    ansible-playbook --diff --inventory inventories/vagrant.yaml playbooks/test.yaml --check
+    """
+    echo
+
+}
+
+if [ $# -eq 0 ] ; then
     print_help
     exit 0
 fi
 
-TEMP=$(getopt -o h --long setup-pip,setup-vault,test-ara,test-vagrant,lint,help \
+TEMP=$(getopt -o h --long setup-pip,setup-vault,test-ara,test-vagrant,run-ansible,lint,help \
              -n 'case' -- "$@")
 while true; do
   case "$1" in
@@ -85,6 +102,7 @@ while true; do
     --test-ara) test_ara ; break ;;
     --test-vagrant) test_vagrant ; break ;;
     --lint) lint ; break ;;
+    --run-ansible) run_ansible ; break ;;
     -h | --help) print_help ; exit 0 ;;
     -- ) shift; break ;;
     * ) break ;;
@@ -94,14 +112,3 @@ done
 if ! command -v python3 > /dev/null ; then echo python3 is not installed ;  exit 0 ; fi
 if ! command -v ansible > /dev/null ; then echo ansible is not installed ;  exit 0 ; fi
 if ! command -v yamllint > /dev/null ; then echo yamllint is not installed ;  exit 0 ; fi
-
-# galaxy
-ansible-galaxy install -r requirements.yaml
-
-# ansible playbook run
-echo
-echo """
-example command:
-ansible-playbook --diff --inventory inventories/vagrant.yaml playbooks/test.yaml --check
-"""
-echo
