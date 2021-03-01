@@ -77,15 +77,10 @@ lint(){
 
 run_ansible(){
     ansible-galaxy install -r requirements.yaml
-    ansible-playbook --diff --inventory inventories/vagrant.yaml playbooks/test.yaml --check
-
-    echo
     echo """
     example command:
     ansible-playbook --diff --inventory inventories/vagrant.yaml playbooks/test.yaml --check
     """
-    echo
-
 }
 
 if [ $# -eq 0 ] ; then
