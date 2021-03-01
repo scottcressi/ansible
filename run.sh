@@ -79,7 +79,7 @@ run_ansible(){
     ansible-galaxy install -r requirements.yaml
     echo """
     example command:
-    ansible-playbook --diff --inventory inventories/vagrant.yaml playbooks/test.yaml --check
+    ansible-playbook --diff --inventory inventories/local.yaml playbooks/test.yaml --check
     """
 }
 
