@@ -44,7 +44,7 @@ setup_pip(){
 }
 
 test_ara(){
-    docker-compose up -d
+    docker-compose up -d ansible-ara
     echo
     echo open in browser: http://127.0.0.1:8000
     docker exec -ti ansible-ara sh -c "ara playbook list --long"
