@@ -17,18 +17,18 @@ print_help(){
 }
 
 setup_vault(){
-    if ! command -v vault > /dev/null ; then echo vault is not installed ;  exit 0 ; fi
     if ! pgrep vault > /dev/null ; then
-        vault server -dev -dev-root-token-id="root" &
-        sleep 2
+        docker-compose up -d vault
     fi
-    vault kv put -address http://127.0.0.1:8200 secret/hello foo=bar
-    echo
+    sleep 2
+    docker exec -ti vault sh -c "export VAULT_TOKEN=root \
+    ; vault kv put -address http://127.0.0.1:8200 secret/hello foo=bar \
+    "
     echo open in browser: http://127.0.0.1:8200
 }
 
 setup_ara(){
-    docker-compose up -d
+    docker-compose up -d ansible-ara
     echo
     echo open in browser: http://127.0.0.1:8000
 }
