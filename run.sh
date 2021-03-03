@@ -5,6 +5,7 @@ print_help(){
     options for prereqs
     --setup-pip             # installs pip requirements
     --setup-vault           # sets up vault
+    --setup-ara             # sets up ara
 
     options for testing
     --test-ara              # test ara once ansible is run without --check
@@ -44,9 +45,6 @@ setup_pip(){
 }
 
 test_ara(){
-    docker-compose up -d ansible-ara
-    echo
-    echo open in browser: http://127.0.0.1:8000
     docker exec -ti ansible-ara sh -c "ara playbook list --long"
 }
 
@@ -88,12 +86,13 @@ if [ $# -eq 0 ] ; then
     exit 0
 fi
 
-TEMP=$(getopt -o h --long setup-pip,setup-vault,test-ara,test-vagrant,run-ansible,lint,help \
+TEMP=$(getopt -o h --long setup-pip,setup-vault,setup-ara,test-ara,test-vagrant,run-ansible,lint,help \
              -n 'case' -- "$@")
 while true; do
   case "$1" in
     --setup-pip) setup_pip ; break ;;
     --setup-vault) setup_vault ; break ;;
+    --setup-ara) setup_ara ; break ;;
     --test-ara) test_ara ; break ;;
     --test-vagrant) test_vagrant ; break ;;
     --lint) lint ; break ;;
