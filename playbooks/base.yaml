@@ -4,11 +4,16 @@
 
   collections:
     - devsec.hardening
+
   roles:
     - devsec.hardening.ssh_hardening
     - devsec.hardening.os_hardening
     - elastic.beats
     - dj-wasabi.telegraf
+
+- name: iptables
+  import_playbook: iptables.yaml
+
   vars:
     beats_version: 7.10.2
     beat: filebeat

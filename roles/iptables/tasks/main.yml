@@ -35,6 +35,10 @@
     jump: ACCEPT
     protocol: tcp
 
+- name: Include role tables
+  include_tasks: iptables-{{ role }}.yml
+  when: inventory_hostname == "localhost"
+
 - name: Firewall rule - drop any traffic without rule
   iptables:
     chain: INPUT

@@ -6,3 +6,4 @@ all:
         localhost:
       vars:
         ansible_connection: local
+        role: local

@@ -1,0 +1,6 @@
+- name: TEST
+  iptables:
+    chain: INPUT
+    destination_port: '22222'
+    jump: ACCEPT
+    protocol: tcp
