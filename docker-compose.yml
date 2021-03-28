@@ -10,7 +10,7 @@ services:
       - 8000:8000
 
   vault:
-    image: vault
+    image: vault:1.7.0
     container_name: vault
     hostname: vault
     environment:
