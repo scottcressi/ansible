@@ -18,14 +18,32 @@
 # https://docs.ansible.com/ansible/latest/collections/community/general/hashi_vault_lookup.html#examples
 - name: set vault secret
   ansible.builtin.set_fact:
-    my_secrets: "{{ lookup('community.general.hashi_vault',
+    somesecretvault: "{{ lookup('community.general.hashi_vault',
     'secret=secret/data/hello
     token={{ vault_token }}
-    url=http://{{ vault_server }}:8200') }}"
+    url=http://{{ vault_server }}:8200'
+    ) }}"
 
 - name: print vault secret
   copy:
     mode: 0755
     dest: /tmp/some_file_vault
     content: |
-      {{ my_secrets['foo'] }}
+      {{ somesecretvault['foo'] }}
+
+# https://docs.ansible.com/ansible/latest/collections/amazon/aws/aws_secret_lookup.html
+- name: set secrets manager secret
+  ansible.builtin.set_fact:
+    somesecretsecretsmanager: "{{ lookup('amazon.aws.aws_secret',
+    'foo',
+    bypath=true,
+    region='us-east-1',
+    on_denied='warn'
+    ) }}"
+
+- name: print secrets manager secret
+  copy:
+    mode: 0755
+    dest: /tmp/some_file_secretsmanager
+    content: |
+      {{ somesecretsecretsmanager['foo'] }}
