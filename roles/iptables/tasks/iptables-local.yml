@@ -1,3 +1,4 @@
+---
 - name: TEST
   iptables:
     chain: INPUT
