@@ -73,6 +73,7 @@ run_ansible(){
     ansible-galaxy install -r requirements.yaml
     echo """
     example command:
+    export ANSIBLE_PYTHON_INTERPRETER="$(which python)"
     ansible-playbook --diff --inventory inventories/local.yaml playbooks/test.yaml --check
     """
 }
