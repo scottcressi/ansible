@@ -10,16 +10,30 @@
 - name: create file
   copy:
     mode: 0755
-    dest: /tmp/some_file
+    dest: /tmp/some_file_plain
     content: |
       dog1
       tiger
 
 # https://docs.ansible.com/ansible/latest/collections/community/general/hashi_vault_lookup.html#examples
+- hashivault_secret:
+    secret: somesecretvault
+    token: "{{ vault_token }}"
+    data:
+      somevaultkey: itworked!
+      anothervaultkey: itworkedagain!
+
+- ansible.builtin.debug:
+    msg: "{{ lookup('community.hashi_vault.hashi_vault',
+    'secret=secret/data/somesecretvault
+    token={{ vault_token }}
+    url=http://{{ vault_server }}:8200'
+    ) }}"
+
 - name: set vault secret
   ansible.builtin.set_fact:
-    somesecretvault: "{{ lookup('community.general.hashi_vault',
-    'secret=secret/data/hello
+    somefactvault: "{{ lookup('community.general.hashi_vault',
+    'secret=secret/data/somesecretvault
     token={{ vault_token }}
     url=http://{{ vault_server }}:8200'
     ) }}"
@@ -29,13 +43,31 @@
     mode: 0755
     dest: /tmp/some_file_vault
     content: |
-      {{ somesecretvault['foo'] }}
+      {{ somefactvault }}
+      {{ somefactvault['somevaultkey'] }}
 
 # https://docs.ansible.com/ansible/latest/collections/amazon/aws/aws_secret_lookup.html
+- name: Add string to AWS Secrets Manager
+  community.aws.aws_secret:
+    name: 'somesecretsecretsmanager'
+    state: present
+    secret_type: 'string'
+    secret: "
+            somesecretsmanagerkey
+            line2
+            "
+    region: 'us-east-1'
+
+- name: warn if access to the secret is denied
+  debug: msg="{{ lookup('amazon.aws.aws_secret',
+         'somesecretsecretsmanager',
+         on_denied='warn',
+         region='us-east-1')}}"
+
 - name: set secrets manager secret
   ansible.builtin.set_fact:
-    somesecretsecretsmanager: "{{ lookup('amazon.aws.aws_secret',
-    'foo',
+    somefactsecretsmanager: "{{ lookup('amazon.aws.aws_secret',
+    'somesecretsecretsmanager',
     bypath=true,
     region='us-east-1',
     on_denied='warn'
@@ -46,4 +78,5 @@
     mode: 0755
     dest: /tmp/some_file_secretsmanager
     content: |
-      {{ somesecretsecretsmanager['foo'] }}
+      {{ somefactsecretsmanager }}
+      {{ somefactsecretsmanager['somesecretsecretsmanager'] }}
