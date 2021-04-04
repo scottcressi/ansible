@@ -33,7 +33,7 @@ setup_ara(){
 test_vagrant(){
     vagrant up
     ansible-galaxy install -r requirements.yaml
-    ansible-playbook --diff --inventory inventories/vagrant.yaml playbooks/test.yaml
+    ansible-playbook --inventory inventories/vagrant.yaml playbooks/test.yaml
 }
 
 setup_pip(){
@@ -73,8 +73,7 @@ run_ansible(){
     ansible-galaxy install -r requirements.yaml
     echo """
     example command:
-    export ANSIBLE_PYTHON_INTERPRETER="$(which python)"
-    ansible-playbook --diff --inventory inventories/local.yaml playbooks/test.yaml --check
+    ansible-playbook --inventory inventories/local.yaml playbooks/test.yaml --check
     """
 }
 
