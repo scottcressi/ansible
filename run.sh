@@ -21,10 +21,6 @@ setup_vault(){
     if ! pgrep vault > /dev/null ; then
         docker-compose up -d vault
     fi
-    sleep 5
-    docker exec -ti vault sh -c "export VAULT_TOKEN=root \
-    ; vault kv put -address http://127.0.0.1:8200 secret/hello foo=bar \
-    "
     echo open in browser: http://127.0.0.1:8200
 }
 

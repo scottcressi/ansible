@@ -15,7 +15,7 @@
   import_playbook: iptables.yaml
 
   vars:
-    beats_version: 7.10.2
+    beats_version: 7.12.0
     beat: filebeat
     beat_conf:
       filebeat:
