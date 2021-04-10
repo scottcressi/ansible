@@ -16,21 +16,23 @@
       tiger
 
 # https://docs.ansible.com/ansible/latest/collections/community/general/hashi_vault_lookup.html#examples
-- hashivault_secret:
+- name: vault secret create
+  hashivault_secret:
     secret: somesecretvault
     token: "{{ vault_token }}"
     data:
       somevaultkey: itworked!
       anothervaultkey: itworkedagain!
 
-- ansible.builtin.debug:
+- name: vault secret check
+  ansible.builtin.debug:
     msg: "{{ lookup('community.hashi_vault.hashi_vault',
     'secret=secret/data/somesecretvault
     token={{ vault_token }}
     url=http://{{ vault_server }}:8200'
     ) }}"
 
-- name: set vault secret
+- name: vault secret set
   ansible.builtin.set_fact:
     somefactvault: "{{ lookup('community.general.hashi_vault',
     'secret=secret/data/somesecretvault
@@ -38,7 +40,7 @@
     url=http://{{ vault_server }}:8200'
     ) }}"
 
-- name: print vault secret
+- name: vault secret print
   copy:
     mode: 0755
     dest: /tmp/some_file_vault
@@ -47,7 +49,7 @@
       {{ somefactvault['somevaultkey'] }}
 
 # https://docs.ansible.com/ansible/latest/collections/amazon/aws/aws_secret_lookup.html
-- name: Add string to AWS Secrets Manager
+- name: secrets manager secret create
   community.aws.aws_secret:
     name: 'somesecretsecretsmanager'
     state: present
@@ -58,13 +60,13 @@
             "
     region: 'us-east-1'
 
-- name: warn if access to the secret is denied
+- name: secrets manager secret check
   debug: msg="{{ lookup('amazon.aws.aws_secret',
          'somesecretsecretsmanager',
          on_denied='warn',
          region='us-east-1')}}"
 
-- name: set secrets manager secret
+- name: secrets manager secret set
   ansible.builtin.set_fact:
     somefactsecretsmanager: "{{ lookup('amazon.aws.aws_secret',
     'somesecretsecretsmanager',
@@ -73,7 +75,7 @@
     on_denied='warn'
     ) }}"
 
-- name: print secrets manager secret
+- name: secrets manager secret print
   copy:
     mode: 0755
     dest: /tmp/some_file_secretsmanager
