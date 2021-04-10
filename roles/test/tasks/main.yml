@@ -82,3 +82,11 @@
     content: |
       {{ somefactsecretsmanager }}
       {{ somefactsecretsmanager['somesecretsecretsmanager'] }}
+
+- name: secrets manager secret remove
+  community.aws.aws_secret:
+    name: 'somesecretsecretsmanager'
+    state: absent
+    secret_type: 'string'
+    secret: "somesecretsecretsmanager"
+    region: 'us-east-1'
