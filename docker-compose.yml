@@ -4,7 +4,7 @@ version: "3.8"
 services:
 
   ansible-ara:
-    image: docker.io/recordsansible/ara-api:latest
+    image: docker.io/recordsansible/ara-api:centos8-pypi-latest
     container_name: ansible-ara
     ports:
       - 8000:8000
