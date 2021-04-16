@@ -1,6 +1,6 @@
 ansible==3.2.0
-ansible-modules-hashivault
-ara
-hvac
+ansible-modules-hashivault==4.6.2
+ara==1.5.6
+hvac==0.10.9
 molecule[docker,lint]
-yamllint
+yamllint==1.26.1
