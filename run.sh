@@ -1,9 +1,12 @@
 #!/usr/bin/env sh
 
+if ! command -v python3 > /dev/null ; then echo python3 is not installed ;  exit 0 ; fi
+if ! command -v ansible > /dev/null ; then echo ansible is not installed, please pip3 install -r requirements.txt ;  exit 0 ; fi
+if ! command -v yamllint > /dev/null ; then echo yamllint is not installed, please pip3 install -r requirements.txt;  exit 0 ; fi
+
 print_help(){
     echo """
     options for prereqs
-    --setup-pip             # installs pip requirements
     --setup-vault           # sets up vault
     --setup-ara             # sets up ara
 
@@ -34,10 +37,6 @@ test_vagrant(){
     vagrant up
     ansible-galaxy install -r requirements.yaml
     ansible-playbook --inventory inventories/vagrant.yaml playbooks/test.yaml
-}
-
-setup_pip(){
-    pip install -r requirements.txt
 }
 
 test_ara(){
@@ -82,11 +81,10 @@ if [ $# -eq 0 ] ; then
     exit 0
 fi
 
-TEMP=$(getopt -o h --long setup-pip,setup-vault,setup-ara,test-ara,test-vagrant,run-ansible,lint,help \
+TEMP=$(getopt -o h --long setup-vault,setup-ara,test-ara,test-vagrant,run-ansible,lint,help \
              -n 'case' -- "$@")
 while true; do
   case "$1" in
-    --setup-pip) setup_pip ; break ;;
     --setup-vault) setup_vault ; break ;;
     --setup-ara) setup_ara ; break ;;
     --test-ara) test_ara ; break ;;
@@ -98,7 +96,3 @@ while true; do
     * ) break ;;
   esac
 done
-
-if ! command -v python3 > /dev/null ; then echo python3 is not installed ;  exit 0 ; fi
-if ! command -v ansible > /dev/null ; then echo ansible is not installed ;  exit 0 ; fi
-if ! command -v yamllint > /dev/null ; then echo yamllint is not installed ;  exit 0 ; fi
