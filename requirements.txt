@@ -1,4 +1,4 @@
-ansible
+ansible==3.2.0
 ansible-modules-hashivault
 ara
 hvac
