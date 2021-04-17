@@ -44,13 +44,11 @@ test_ara(){
 }
 
 lint(){
-    # yamllint
-    find playbooks/ inventories/ roles/ \
-        -not -path "roles/*/.travis.yml" \
-        -not -path "roles/*/meta/main.yml" \
-        -not -path "roles/*/README.md" \
-        -not -path "roles/*/tests/inventory" \
-        -type f | xargs yamllint -s -d "{extends: relaxed, rules: {line-length: {max: 120}}}"
+    echo ; echo yamllint ; echo
+    find . -type f -name "*.y*ml" \
+        | grep -v /meta/ \
+        | grep -v .travis.yml \
+        | xargs yamllint -s -d "{extends: relaxed, rules: {line-length: {max: 120}}}"
 
     # ansible lint playbooks
     for i in $(find playbooks -type f) ; do
