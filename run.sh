@@ -4,6 +4,14 @@ if ! command -v python3 > /dev/null ; then echo python3 is not installed ;  exit
 if ! command -v ansible > /dev/null ; then echo ansible is not installed, please pip3 install -r requirements.txt ;  exit 0 ; fi
 if ! command -v yamllint > /dev/null ; then echo yamllint is not installed, please pip3 install -r requirements.txt;  exit 0 ; fi
 
+INSTALLED_VERSION="$(ansible --version | head -1 | awk '{print $2}')"
+REQUIRED_VERSION="$(pip list | grep ansible-base | awk '{print $2}')"
+
+if [ "$INSTALLED_VERSION" != "$REQUIRED_VERSION" ] ; then
+    echo please pip3 install -r requirements.txt
+    exit 0
+fi
+
 print_help(){
     echo """
     options for prereqs
