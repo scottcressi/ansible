@@ -3,8 +3,8 @@ roles:
   - name: dj-wasabi.telegraf
     version: 0.13.2
   - name: elastic.beats
-    version: v7.12.1
+    version: v7.13.0
 
 collections:
   - name: devsec.hardening
-    version: 7.6.0
+    version: 7.7.0
