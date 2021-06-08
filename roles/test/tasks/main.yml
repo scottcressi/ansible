@@ -90,3 +90,4 @@
     secret_type: 'string'
     secret: "somesecretsecretsmanager"
     region: 'us-east-1'
+    recovery_window: 0
