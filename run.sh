@@ -15,7 +15,6 @@ fi
 print_help(){
     echo """
     options for prereqs
-    --setup-vault           # sets up vault
     --setup-ara             # sets up ara
 
     options for testing
@@ -26,13 +25,6 @@ print_help(){
     run:
     --run-ansible           # run ansible
     """
-}
-
-setup_vault(){
-    if ! pgrep vault > /dev/null ; then
-        docker-compose up -d vault
-    fi
-    echo open in browser: http://127.0.0.1:8200
 }
 
 setup_ara(){
@@ -87,11 +79,10 @@ if [ $# -eq 0 ] ; then
     exit 0
 fi
 
-TEMP=$(getopt -o h --long setup-vault,setup-ara,test-ara,test-vagrant,run-ansible,lint,help \
+TEMP=$(getopt -o h --long ,setup-ara,test-ara,test-vagrant,run-ansible,lint,help \
              -n 'case' -- "$@")
 while true; do
   case "$1" in
-    --setup-vault) setup_vault ; break ;;
     --setup-ara) setup_ara ; break ;;
     --test-ara) test_ara ; break ;;
     --test-vagrant) test_vagrant ; break ;;

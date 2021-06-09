@@ -8,13 +8,3 @@ services:
     container_name: ansible-ara
     ports:
       - 8000:8000
-
-  vault:
-    image: vault:1.7.0
-    container_name: vault
-    hostname: vault
-    environment:
-      - -dev
-      - VAULT_DEV_ROOT_TOKEN_ID=root
-    ports:
-      - 8200:8200

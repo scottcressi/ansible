@@ -1,5 +1,2 @@
 ---
 # defaults file for test
-
-vault_token: root
-vault_server: localhost
