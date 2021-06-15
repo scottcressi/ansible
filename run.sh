@@ -18,7 +18,6 @@ print_help(){
     --setup-ara             # sets up ara
 
     options for testing
-    --test-ara              # test ara once ansible is run without --check
     --test-vagrant          # test ansible in vagrant
     --lint                  # lint everything
 
@@ -29,6 +28,8 @@ print_help(){
 
 setup_ara(){
     docker-compose up -d ansible-ara
+    sleep 1
+    docker exec -ti ansible-ara sh -c "ara playbook list --long"
     echo
     echo open in browser: http://127.0.0.1:8000
 }
@@ -37,10 +38,6 @@ test_vagrant(){
     vagrant up
     ansible-galaxy install -r requirements.yaml
     ansible-playbook --inventory inventories/vagrant.yaml playbooks/test.yaml
-}
-
-test_ara(){
-    docker exec -ti ansible-ara sh -c "ara playbook list --long"
 }
 
 lint(){
@@ -79,12 +76,11 @@ if [ $# -eq 0 ] ; then
     exit 0
 fi
 
-TEMP=$(getopt -o h --long ,setup-ara,test-ara,test-vagrant,run-ansible,lint,help \
+TEMP=$(getopt -o h --long ,setup-ara,test-vagrant,run-ansible,lint,help \
              -n 'case' -- "$@")
 while true; do
   case "$1" in
     --setup-ara) setup_ara ; break ;;
-    --test-ara) test_ara ; break ;;
     --test-vagrant) test_vagrant ; break ;;
     --lint) lint ; break ;;
     --run-ansible) run_ansible ; break ;;
