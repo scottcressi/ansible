@@ -5,7 +5,7 @@ driver:
   name: docker
 platforms:
   - name: instance
-    image: centos:7.9.2009
+    image: debian:buster
     pre_build_image: true
 provisioner:
   name: ansible
