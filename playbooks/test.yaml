@@ -5,3 +5,4 @@
     - name: import test
       import_role:
         name: roles/test
+  gather_facts: no
